@@ -103,6 +103,8 @@ function forwardprop(g::Graph, model::LSTM, x, prev)
 
     hidden = Array(NNMatrix,0)
     cell = Array(NNMatrix,0)
+
+    dropout!(g, x, 0.1)
     for d in 1:length(model.hiddensizes) # for each hidden layer
 
         input = d == 1 ? x : hidden[d-1]
@@ -153,6 +155,7 @@ function forwardprop(g::Graph, model::LSTM, x, prev)
         # compute hidden state as gated, saturated cell activations
         hidden_d = eltmul(g, outputgate, tanh(g, cell_d))
 
+        if d != length(model.hiddensizes) dropout!(g, hidden_d, 0.1) end
         push!(hidden,hidden_d)
         push!(cell, cell_d)
     end

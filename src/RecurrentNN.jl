@@ -3,7 +3,7 @@ import Base.tanh
 
 export Model, RNN, LSTM
 export NNMatrix, randNNMat, forwardprop, softmax, Solver, step
-export Graph, backprop, rowpluck
+export Graph, backprop, rowpluck, dropout!
 
 include("recurrent.jl")
 include("graph.jl")

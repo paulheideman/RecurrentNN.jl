@@ -9,6 +9,18 @@ function backprop(g::Graph)
     for i = length(g.backprop):-1:1  g.backprop[i]() end
 end
 
+function dropout!(g::Graph, m::NNMatrix, p::Float64)
+    if g.doBackprop # we are training
+        @inbounds for j = 1:m.d, i = 1:m.n
+            if rand() <= p m.w[i,j] = 0. end
+        end
+    else # we are testng
+        @inbounds for j = 1:m.d, i = 1:m.n
+            m.w[i,j] = m.w[i,j] .* (1-p)
+        end
+    end
+end
+
 function rowpluck(g::Graph, m::NNMatrix, ix::Int)
     # pluck a row of m and return it as a column vector
     out = NNMatrix(m.d, 1)

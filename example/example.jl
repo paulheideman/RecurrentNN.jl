@@ -6,7 +6,7 @@ using RecurrentNN
 srand(12345)
 const generator = "lstm" # can be 'rnn' or 'lstm'
 const hiddensizes = [100,100]
-const lettersize = 7 # size of letter embeddings
+const lettersize = 12 # size of letter embeddings
 
 # optimization
 const regc = 0.000001 # L2 regularization strength
@@ -195,7 +195,7 @@ function tick(model::Model, wil::NNMatrix, sents::Array, solver::Solver, tickite
     return model, wil, solver, tickiter, pplcurve, pplmedian
 end
 
-maxIter = 100 # make this about 100_000 to run full model
+maxIter = 1000 # make this about 100_000 to run full model
 trgppl = 1.1 # stop if this perplexity score is reached
 @time while tickiter < maxIter && pplmedian > trgppl
     model, wil, solver, tickiter, pplcurve, pplmedian = tick(model, wil, sents, solver, tickiter, pplcurve, pplmedian)
